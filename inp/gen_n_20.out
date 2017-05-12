@@ -1,0 +1,101 @@
+iam =    0
+iam =    1
+
+PE =    0:   2 Grid-coord (   0,   0) PROW =    0:   2 PCOL =    0:   1
+
+PE =    1:   2 Grid-coord (   1,   0) PROW =    1:   2 PCOL =    0:   1
+Read the input
+(large jobs for hot ch4)
+
+GEN-MAT 20
+J 43 (will be ignored)
+gamma 2 (will be ignored)
+DIAGONALIZER pdsyevd (needs to be stated)
+ENERGY_THRESH  18000.0 (ignored)
+COEF_THRESH    1e-24 (ignored)
+ZPE 0.0 (ignored)
+
+
+
+
+...done!
+ iam =        0 gfactor  =           1.00000000
+ Only for iam =            0 jrot,gamma,nroots,chkpoint       43       2 1000000       0
+Generating matrix of size   20
+Generating matrix of size   20
+
+lwork =               561 liwork =              150 lda =               10 loc_r =               10 loc_c =               20
+
+
+ Memory Report (   0)
+ Active Arrays                                        size (Gb)
+ diag_scalapack:a_loc                                  0.1490E-05                
+ diag_scalapack:z_loc                                  0.1490E-05                
+ diag_scalapack:w                                      0.1490E-06                
+ diag_scalapack:work                                   0.4180E-05                
+ diag_scalapack:iwork                                  0.5588E-06                
+ Total memory   =                                     0.00000787 Gb
+ Maximal memory =                                     0.00000787 Gb (            61.0)
+
+
+
+ Memory Report (   1)
+ Active Arrays                                        size (Gb)
+ diag_scalapack:a_loc                                  0.1490E-05                
+ diag_scalapack:z_loc                                  0.1490E-05                
+ diag_scalapack:w                                      0.1490E-06                
+ diag_scalapack:work                                   0.4180E-05                
+ diag_scalapack:iwork                                  0.5588E-06                
+ Total memory   =                                     0.00000787 Gb
+ Maximal memory =                                     0.00000787 Gb (            61.0)
+
+
+info =        0
+
+Diagonalization finished successfully!
+
+Time to diagonalize matrix is     0.091706 sec
+
+Computed eigenvalues:
+       10.99819942
+       12.00157381
+       13.00077281
+       14.00114656
+       14.99831299
+       16.00136937
+       16.99950422
+       18.00088057
+       18.99955042
+       19.99963239
+       20.99834244
+       22.00043574
+       23.00147018
+       23.99976520
+       25.00058204
+       25.99961627
+       26.99948510
+       27.99845829
+       29.00163805
+       30.00100053
+
+ writing first 10 eigenvectors into file= solution_gen-mat_N-20_.chk iounit=  10
+
+Time to write vectors:     0.018874 sec
+
+
+ Memory Report (   0)
+
+
+ Memory Report (   1)
+ Active Arrays                                        size (Gb)
+ Active Arrays                                        size (Gb)
+ Total memory   =                                     0.00000000 Gb
+ Maximal memory =                                     0.00000802 Gb (            61.0)
+
+ (        6 arrays contributing less than 1% are not shown)
+
+ Total memory   =                                     0.00000000 Gb
+ Maximal memory =                                     0.00000802 Gb (            61.0)
+
+ (        6 arrays contributing less than 1% are not shown)
+
