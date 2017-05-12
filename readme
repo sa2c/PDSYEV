@@ -1,0 +1,11 @@
+All Fortran source files can be found in /home/dc-yurc1/scratch/diag/PDSYEV, see also makefile. 
+The job size should be specified in the input file, 
+see, for examplle, ./inp/gen_n_20.inp,gen_n_100.inp,gen_n_10.inp 
+
+We use a two-steps submission script:
+./b_diag.sh gen_n_10.inp  24 36 
+which calls the running script sub_script.csh. Here 24 is the number of nodes and 36 is the wall time. 
+In the input (ASCII) file please ignore all lines except 
+GEN-MAT 10
+where 10 is the matrix dimension (the order of line is not important as well as the number of spaces). 
+The input is not case-sensitive, parentheses are used for comments. 
