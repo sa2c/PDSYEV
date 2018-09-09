@@ -111,4 +111,8 @@ echo -e "\nnumtasks=$numtasks, numnodes=$numnodes, mpi_tasks_per_node=$mpi_tasks
 
 echo -e "\nExecuting command:\n==================\n$CMD\n"
 
-eval $CMD 
+
+echo "RUNNING: ${CMD}"
+echo "START: $(date)"
+eval $CMD
+echo "END: $(date)"
