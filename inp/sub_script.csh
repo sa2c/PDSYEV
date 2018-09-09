@@ -11,21 +11,12 @@
 #! sbatch directives begin here ###############################
 #! Name of the job:
 ##SBATCH -J $name
-#! Which project should be charged:
-##SBATCH -A DP020
 #! How many whole nodes should be allocated?
 ##SBATCH --nodes=$nodes
 #! How many (MPI) tasks will there be in total? (<= nodes*16)
 ##SBATCH --ntasks=$nprocs
 #! How much wallclock time will be required?
 ##SBATCH --time=02:00:00
-#! What types of email messages do you wish to receive?
-#! Uncomment this to prevent the job from being requeued (e.g. if
-#! interrupted by node failure or system downtime):
-##SBATCH --no-requeue
-
-#! Do not change:
-#SBATCH -p sandybridge
 
 #! sbatch directives end here (put any additional directives above this line)
 
@@ -52,6 +43,10 @@ module load default-impi                   # REQUIRED - loads the basic environm
 
 #! Full path to application executable: 
 application=$exec
+CMD_PREFIX=$5
+MODULE_LOADER=$6
+
+. ${MODULE_LOADER}
 
 #! Run options for the application:
 options=
@@ -81,7 +76,7 @@ export I_MPI_PIN_ORDER=scatter # Adjacent domains have minimal sharing of caches
 #! Uncomment one choice for CMD below (add mpirun/mpiexec options if necessary):
 
 #! Choose this for a MPI code (possibly using OpenMP) using Intel MPI.
-CMD="mpirun -ppn $mpi_tasks_per_node -np $np $pwd/$application < $pwd/$name.inp > $pwd/$name.out"
+CMD="${CMD_PREFIX}mpirun -ppn $mpi_tasks_per_node -np $np $pwd/$application < $pwd/$name.inp > $pwd/$name.out"
 
 #! Choose this for a pure shared-memory OpenMP parallel program on a single node:
 #! (OMP_NUM_THREADS threads will be created):
@@ -117,4 +112,8 @@ echo -e "\nnumtasks=$numtasks, numnodes=$numnodes, mpi_tasks_per_node=$mpi_tasks
 
 echo -e "\nExecuting command:\n==================\n$CMD\n"
 
-eval $CMD 
+
+echo "RUNNING: ${CMD}"
+echo "START: $(date)"
+eval $CMD
+echo "END: $(date)"
