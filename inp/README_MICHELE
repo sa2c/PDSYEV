@@ -1,0 +1,12 @@
+command that works for me:
+./bdiag_mod.sh gen_n_10.inp 1 5
+
+
+Currently Loaded Modulefiles:
+  1) dot                                8) gcc-5.4.0-gcc-4.8.5-fis24gg
+  2) slurm                              9) openmpi-1.10.7-gcc-5.4.0-jdc7f4f
+  3) turbovnc/2.0.1                    10) rhel7/default-gpu
+  4) vgl/2.5.1/64                      11) intel/compilers/2018.1
+  5) singularity/current               12) intel/mkl/2018.1
+  6) rhel7/global                      13) intel/impi/2018.1/intel
+  7) cuda/8.0
