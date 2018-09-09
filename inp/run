@@ -1,2 +1,2 @@
-rm *.o *.e *.out machine.file.*
-./b_diag.sh gen_n_10.inp 1 36 debug
+rm *.o *.e *.out machine.file.* amplxe-results1
+./b_diag.sh gen_n_1000.inp 5 36 debug

@@ -5,6 +5,11 @@ ehthumbs.db
 # Build files
 *.mod
 *.o
+*.oo
+TESTING
+EXAMPLE
+TIMING
+scalapack/libscalapack.a
 
 # Folder config file
 Desktop.ini
