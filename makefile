@@ -5,12 +5,12 @@ CC = icc
 FFLAGS = -O3 -ipo -xHost -traceback -g
 #-align -mcmodel=medium -traceback
 
-SCALAPACK = -lmkl_scalapack_lp64 -lmkl_blacs_sgimpt_lp64 -mkl=sequential -lmpi
+SCALAPACK = -Lscalapack -lscalapack -lmpi
 
 #LIB    =  $(SCALAPACK)
 #LIB    =  -lmkl_scalapack_ilp64 -lmkl_intel_ilp64 -lmkl_sequential -lmkl_core -lmkl_blacs_openmpi_lp64 -lpthread -lm
 
-LIB = -lmkl_scalapack_lp64 -lmkl_blacs_intelmpi_lp64 -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm
+LIB = -Lscalapack -lscalapack -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm
 
 #LIB = -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_blacs_openmpi_lp64 -lmkl_sequential -lmkl_core -lpthread
 
