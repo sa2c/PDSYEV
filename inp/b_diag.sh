@@ -19,8 +19,10 @@ echo $JOB
 
 export dir1=`pwd | awk -F/ '{print $2}'`
 
-if [[ "$4" -eq "debug" ]]; then
+if [[ "$4" == "debug" ]]; then
     CMD_PREFIX="amplxe-cl -collect hotspots --result-dir amplxe-results1 --"
+else
+    CMD_PREFIX=" "
 fi
 
 if [ -e "$name.o" ]; then

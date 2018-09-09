@@ -1,0 +1,2 @@
+rm *.o *.e *.out machine.file.*
+./b_diag.sh gen_n_10.inp 1 36 debug
