@@ -2,6 +2,10 @@
 Thumbs.db
 ehthumbs.db
 
+# Build files
+*.mod
+*.o
+
 # Folder config file
 Desktop.ini
 

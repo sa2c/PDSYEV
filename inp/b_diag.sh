@@ -19,6 +19,10 @@ echo $JOB
 
 export dir1=`pwd | awk -F/ '{print $2}'`
 
+if [[ "$4" -eq "debug" ]]; then
+    CMD_PREFIX="amplxe-cl -collect hotspots --result-dir amplxe-results1 --"
+fi
+
 if [ -e "$name.o" ]; then
    /bin/rm $name.o
 fi
@@ -34,11 +38,23 @@ if [ -e "$name.out" ]; then
   /bin/mv $name.out $name.tmp
 fi
 
+host=$(hostname)
 
+if [[ "$host" -eq "cl1" || "$host" -eq "cl2" ]]
+then
+    # Hawk system
+    export CPUPERNODE=40
+    MODULE_LOADER="$PWD/../hawk_load_modules.sh"
+else
+    # Wilkes system
+    export CPUPERNODE=16
+    SUB_ARGS='-A DP020 -p sandybridge'
+    MODULE_LOADER="$PWD/../load_modules.sh"
+fi
 
 export PARNODES=$2
 export dmem=`expr $2 \* 63900`
-export ntasks=`expr $PARNODES \* 16` 
+export ntasks=`expr $PARNODES \* $CPUPERNODE` 
 
 export nprocs=$ntasks
 
@@ -50,7 +66,7 @@ export MEM=`echo $nprocs $dmem | awk  '{printf( "%8.0f\n", $2*$1 )}'`
 export jobtype="small2"
 export wclim=12
 
-if [ $nprocs -lt "8" ]; then
+if [[ "$nprocs" -lt "8" ]]; then
    export jobtype=""
 fi
 
@@ -67,9 +83,8 @@ echo "Working dir is " $pwd
 #     -v "setenv nprocs $nprocs" \
 #     $pwd/run_pdiag.sh
 
-
-sbatch -A DIRAC-dp060 --nodes=$PARNODES --ntasks=$nprocs --time=$wclim:00:00  -J $name -o $name.o -e $name.e   \
-     --workdir=$pwd --hint=compute_bound --no-requeue -p sandybridge \
-     $pwd/sub_script.csh $nprocs $name $exec $pwd
-     
+sbatch --nodes=$PARNODES --ntasks=$nprocs --time=$wclim:00:00  -J $name -o $name.o -e $name.e   \
+     ${SUB_ARGS} \
+     --workdir=$pwd --hint=compute_bound --no-requeue \
+     $pwd/sub_script.csh $nprocs $name $exec $pwd "$CMD_PREFIX" $MODULE_LOADER
 
