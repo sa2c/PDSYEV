@@ -76,7 +76,7 @@ export I_MPI_PIN_ORDER=scatter # Adjacent domains have minimal sharing of caches
 #! Uncomment one choice for CMD below (add mpirun/mpiexec options if necessary):
 
 #! Choose this for a MPI code (possibly using OpenMP) using Intel MPI.
-CMD="${CMD_PREFIX}mpirun -ppn $mpi_tasks_per_node -np $np $pwd/$application < $pwd/$name.inp > $pwd/$name.out"
+CMD="${CMD_PREFIX} mpirun -ppn $mpi_tasks_per_node -np $np $pwd/$application < $pwd/$name.inp > $pwd/$name.out"
 
 #! Choose this for a pure shared-memory OpenMP parallel program on a single node:
 #! (OMP_NUM_THREADS threads will be created):
@@ -114,6 +114,6 @@ echo -e "\nExecuting command:\n==================\n$CMD\n"
 
 
 echo "RUNNING: ${CMD}"
-echo "START: $(date)"
+echo "START: $(date +'%s')"
 eval $CMD
-echo "END: $(date)"
+echo "END: $(date +'%s')"

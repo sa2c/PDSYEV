@@ -44,11 +44,12 @@ if [[ "$host" -eq "cl1" || "$host" -eq "cl2" ]]
 then
     # Hawk system
     export CPUPERNODE=40
-    SUB_PREFIX='hawk_'
+    MODULE_LOADER="$PWD/../hawk_load_modules.sh"
 else
     # Wilkes system
     export CPUPERNODE=16
     SUB_ARGS='-A DP020 -p sandybridge'
+    MODULE_LOADER="$PWD/../load_modules.sh"
 fi
 
 export PARNODES=$2
@@ -82,8 +83,8 @@ echo "Working dir is " $pwd
 #     -v "setenv nprocs $nprocs" \
 #     $pwd/run_pdiag.sh
 
-
 sbatch --nodes=$PARNODES --ntasks=$nprocs --time=$wclim:00:00  -J $name -o $name.o -e $name.e   \
      ${SUB_ARGS} \
      --workdir=$pwd --hint=compute_bound --no-requeue \
-     $pwd/${SUB_PREFIX}sub_script.csh $nprocs $name $exec $pwd $CMD_PREFIX
+     $pwd/sub_script.csh $nprocs $name $exec $pwd "$CMD_PREFIX" $MODULE_LOADER
+
