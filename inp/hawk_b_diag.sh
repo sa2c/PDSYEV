@@ -19,6 +19,10 @@ echo $JOB
 
 export dir1=`pwd | awk -F/ '{print $2}'`
 
+if [[ "$4" -eq "debug" ]]; then
+    CMD_PREFIX="amplxe-cl -collect hotspots --result-dir amplxe-results1 --"
+fi
+
 if [ -e "$name.o" ]; then
    /bin/rm $name.o
 fi
@@ -71,6 +75,4 @@ echo "Working dir is " $pwd
 
 sbatch --nodes=$PARNODES --ntasks=$nprocs --time=$wclim:00:00  -J $name -o $name.o -e $name.e   \
      --workdir=$pwd --hint=compute_bound --no-requeue \
-     $pwd/hawk_sub_script.csh $nprocs $name $exec $pwd
-     
-
+     $pwd/hawk_sub_script.csh $nprocs $name $exec $pwd $CMD_PREFIX

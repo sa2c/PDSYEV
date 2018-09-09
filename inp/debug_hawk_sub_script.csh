@@ -45,7 +45,6 @@ module load default-impi                   # REQUIRED - loads the basic environm
 
 #! Full path to application executable: 
 application=$exec
-CMD_PREFIX=$5
 
 #! Run options for the application:
 options=
@@ -75,7 +74,7 @@ export I_MPI_PIN_ORDER=scatter # Adjacent domains have minimal sharing of caches
 #! Uncomment one choice for CMD below (add mpirun/mpiexec options if necessary):
 
 #! Choose this for a MPI code (possibly using OpenMP) using Intel MPI.
-CMD="${CMD_PREFIX}mpirun -ppn $mpi_tasks_per_node -np $np $pwd/$application < $pwd/$name.inp > $pwd/$name.out"
+CMD="amplxe-cl -collect hotspots --result-dir amplxe-results1 -- mpirun -ppn $mpi_tasks_per_node -np $np $pwd/$application < $pwd/$name.inp > $pwd/$name.out"
 
 #! Choose this for a pure shared-memory OpenMP parallel program on a single node:
 #! (OMP_NUM_THREADS threads will be created):
@@ -111,4 +110,7 @@ echo -e "\nnumtasks=$numtasks, numnodes=$numnodes, mpi_tasks_per_node=$mpi_tasks
 
 echo -e "\nExecuting command:\n==================\n$CMD\n"
 
+
+echo "START: $(date)"
 eval $CMD 
+echo "END: $(date)"
