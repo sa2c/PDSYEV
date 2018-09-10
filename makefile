@@ -10,7 +10,7 @@ SCALAPACK = -Lscalapack -lscalapack -lmpi
 #LIB    =  $(SCALAPACK)
 #LIB    =  -lmkl_scalapack_ilp64 -lmkl_intel_ilp64 -lmkl_sequential -lmkl_core -lmkl_blacs_openmpi_lp64 -lpthread -lm
 
-LIB = -Lscalapack -lscalapack -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm
+LIB = -Lscalapack -lscalapack -lmkl_intel_lp64 -lmkl_sequential -lmkl_core -lpthread -lm -lcuda -lcublas -lcudart
 
 #LIB = -lmkl_scalapack_lp64 -lmkl_intel_lp64 -lmkl_blacs_openmpi_lp64 -lmkl_sequential -lmkl_core -lpthread
 

@@ -57,4 +57,4 @@ SCALAPACKLIB  = libscalapack.a
 
 BLASLIB       = -lblas
 LAPACKLIB     = -llapack
-LIBS          = $(LAPACKLIB) $(BLASLIB)
+LIBS          = $(LAPACKLIB) $(BLASLIB) -lcuda -lcublas -lcudart

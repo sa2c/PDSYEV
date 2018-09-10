@@ -69,7 +69,7 @@ echo "Working dir is " $pwd
 
 
 sbatch --nodes=$PARNODES --ntasks=$nprocs --time=$wclim  -J $name -o $name.o -e $name.e   \
-     --workdir=$pwd --hint=compute_bound --no-requeue -p pascal --gres=gpu:1\
+     --workdir=$pwd --hint=compute_bound --no-requeue -p pascal --gres=gpu:2\
      $pwd/sub_script_mod.csh $nprocs $name $exec $pwd
      
 

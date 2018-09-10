@@ -16,6 +16,11 @@
 #include "PBblacs.h"
 #include "PBblas.h"
 
+//CUBLAS
+#include <cuda_runtime_api.h>
+#include <cuda_runtime.h>
+#include <cublas_v2.h>
+
 #ifdef __STDC__
 void pdgemv_( F_CHAR_T TRANS, int * M, int * N, double * ALPHA,
               double * A, int * IA, int * JA, int * DESCA,
@@ -409,9 +414,103 @@ void pdgemv_( TRANS, M, N, ALPHA, A, IA, JA, DESCA, X, IX, JX, DESCX,
       Anq = PB_Cnumroc( *N, 0, Ad0[INB_], Ad0[NB_], mycol, Ad0[CSRC_], npcol );
       if( ( Amp > 0 ) && ( Anq > 0 ) )
       {
-         dgemv_( TRANS, &Amp, &Anq, ((char *) ALPHA), Mptr( ((char *)A),
-                 Aii, Ajj, Ald, type->size ), &Ald, XA, &XAd[LLD_], tbeta,
-                 YA, &ione );
+	      cublasHandle_t handle;
+	      cublasOperation_t trans;
+	      cudaError_t cudaStat;    
+	      cublasStatus_t cu_status;
+	      double* devPtrA, *devPtrX, *devPtrY;
+
+
+	      cudaStat = cudaMalloc ((void**)&devPtrA, Amp*Anq*sizeof(double));
+	      if (cudaStat != cudaSuccess)
+	      {
+		      printf ("device memory allocation failed");
+		      exit(1);
+	      }
+	      cudaStat = cudaMalloc ((void**)&devPtrX, Amp*sizeof(double));
+	      if (cudaStat != cudaSuccess)
+	      {
+		      printf ("device memory allocation failed");
+		      exit(1);
+	      }
+	      cudaStat = cudaMalloc ((void**)&devPtrY, Anq*sizeof(double));
+	      if (cudaStat != cudaSuccess)
+	      {
+		      printf ("device memory allocation failed");
+		      exit(1);
+	      }
+
+	      cu_status = cublasCreate(&handle);
+	      if (cu_status != CUBLAS_STATUS_SUCCESS)
+	      {
+		      printf ("CUBLAS initialization failed\n");
+		      exit(1);
+	      }
+
+	      cu_status = cublasSetMatrix(Amp, Anq, sizeof(double), 
+                  Mptr( ((char *)A),Aii, Ajj, Ald, type->size ), Amp, devPtrA, Amp);
+	      if (cu_status != CUBLAS_STATUS_SUCCESS)
+	      {
+		      printf ("copying A to devPtrA failed");
+		      cudaFree (devPtrA);
+		      cublasDestroy(handle);
+		      exit(1);
+	      }
+	      cu_status = cublasSetVector(Amp, sizeof(double), XA, XAd[LLD_], devPtrX, ione);
+	      if (cu_status != CUBLAS_STATUS_SUCCESS)
+	      {
+		      printf ("copying X to devPtrX failed");
+		      cudaFree (devPtrA);
+		      cudaFree (devPtrX);
+		      cublasDestroy(handle);
+		      exit(1);
+	      }
+	      cu_status = cublasSetVector(Anq, sizeof(double), YA, ione, devPtrY, ione);
+	      if (cu_status != CUBLAS_STATUS_SUCCESS)
+	      {
+		      printf ("copying Y to devPtrY failed");
+		      cudaFree (devPtrA);
+		      cudaFree (devPtrX);
+		      cudaFree (devPtrY);
+		      cublasDestroy(handle);
+		      exit(1);
+	      }
+
+	      if(nota)//: if(TRANS =='N')
+	      {
+		      trans = CUBLAS_OP_N;
+	      }
+	      else
+	      {
+		      trans = CUBLAS_OP_T;
+	      }
+
+	      cu_status = cublasDgemv(handle, trans, Amp, Anq, &(ALPHA[REAL_PART]), devPtrA, ione, devPtrX, ione, &(BETA[REAL_PART]), devPtrY, ione);
+	      if (cu_status != CUBLAS_STATUS_SUCCESS)
+	      {
+		      printf ("cublasDgemv failed");
+		      cudaFree (devPtrA);
+		      cudaFree (devPtrX);
+		      cudaFree (devPtrY);
+		      cublasDestroy(handle);
+		      exit(1);
+	      }
+
+	      cu_status = cublasGetVector(Amp, sizeof(double), devPtrY, ione, YA, ione);
+	      if (cu_status != CUBLAS_STATUS_SUCCESS)
+	      {
+		      printf ("copying devPtrY to host failed");
+		      cudaFree (devPtrA);
+		      cudaFree (devPtrX);
+		      cudaFree (devPtrY);
+		      cublasDestroy(handle);
+		      exit(1);
+	      }
+
+
+	      //dgemv_( TRANS, &Amp, &Anq, ((char *) ALPHA), Mptr( ((char *)A),
+		//		      Aii, Ajj, Ald, type->size ), &Ald, XA, &XAd[LLD_], tbeta,
+		//	      YA, &ione );
       }
       if( XAfr ) free( XA );
 /*
